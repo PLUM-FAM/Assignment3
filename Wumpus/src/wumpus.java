@@ -1,12 +1,4 @@
-
-// Aim:To implement Wumpus world problem in Java
-//Program:
-
 import java.util.*;
-
-
-
-
 
 class wumpus 
 {
