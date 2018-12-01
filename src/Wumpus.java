@@ -52,7 +52,7 @@ class Wumpus
 					break out;
                 }
 
-				t[c] = new tiles(w[i][j], c);
+				t[c] = new tiles(w[i][j], c, size);
 				++c;
 			}
 		}
@@ -75,12 +75,13 @@ class Wumpus
             if (t[pos].env.contains("G")) 
             {
 				complete = 1;
-				System.out.println("Gold Found!!");
+				System.out.println("Gold Found! Yippie kai ayyeeee");
 				break;
 			}
             if (t[pos].env.contains("W")) 
             {
-            	System.out.println("Eaten by wumpus" );
+            	System.out.println("Eaten by wumpus. Oops." );
+            	score *= -1;
             	endGame();
             }
 
@@ -93,9 +94,8 @@ class Wumpus
 				t[pos].r = 1;
                 ++pos;
                 
-				System.out.println("\nfront pos=" + pos);
                 
-                ++score;
+                score++;
 				
 				t[pos].back += temp1;
 				
@@ -165,8 +165,7 @@ class Wumpus
 				
 				t[pos].l = 1;
 				pos = pos - 1;
-				System.out.println("\nback pos= " + pos);
-				++score;
+				score++;
 
 				t[pos].back += temp1;
 
@@ -234,7 +233,6 @@ class Wumpus
 			
 				t[pos].u = 1;
 				pos = pos - size;
-				System.out.println("\nUp pos= " + pos);
 				++score;
 	
 				t[pos].back += temp1;
@@ -301,8 +299,7 @@ class Wumpus
 				t[pos].d = 1;
 				pos = pos + size;
         
-                System.out.println("\ndown pos= " + pos);
-				++score;
+				score++;
 				// t[pos].visited=1;
 
 				t[pos].back += temp1;
@@ -371,7 +368,7 @@ class Wumpus
 				t[pos].visited = 1;
             } 
             
-            else if (limit > 50) 
+            else if (limit > (size*10)) 
             {
 				int temp3 = pos;
 				int flag_1 = 0, flag2 = 0, flag3 = 0, flag4 = 0;
@@ -486,6 +483,7 @@ class Wumpus
 				score += 50;
 				t[pos].pit = 1;
 				System.out.println("\n\nFallen in pit of position " + pos + ".");
+            	score *= -1;
 				endGame();
 			}
 
@@ -522,12 +520,7 @@ class Wumpus
 					t[y].pit = 1;
 					// System.out.println("\nPit confirmed at position "+y);
 				}
-			}
-			
-            try 
-            {
-				Thread.sleep(200);
-			} catch (Exception p) {}
+            }
 
 		} while (complete == 0); //end of do while loop
 
@@ -540,8 +533,8 @@ class Wumpus
 			score *= 2; //double the score to take the same path back to the start
 			score += 1000;
 		}
-		System.out.println("The score of the agent till he reaches gold is " + score
-				+ ".\nNow he will return back following the best explored path.");
+		System.out.println("Total score for adventurer is  " + score
+				+ ".\n(This includes the path cost to get out.)");
 
 	}
 }

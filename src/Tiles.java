@@ -19,17 +19,17 @@ class tiles
 	int l, r, u, d;
 	String back = "";
 
-    tiles(String s, int n) 
+    tiles(String s, int n, int size) 
     {
 		env = s;
 		num = n;
 		l = r = u = d = 0;
-        if (n == 9 || n == 5)
+        if ((n-1) % size == 0) //left wall
         {
 			bl = 1;
         }
 
-		if (n == 8 || n == 12)
+		if (n % size == 0) //right wall
         {
             br = 1;
         }
@@ -40,19 +40,19 @@ class tiles
 			bl = 1;
         }
         
-        if (n == 13) 
+        if (n == size*size - (size-1)) 	//bottom left 
         {
 			bd = 1;
 			bl = 1;
         }
         
-        if (n == 4) 
+        if (n == size) 	//top right
         {
 			bu = 1;
 			br = 1;
         }
         
-        if (n == 16) 
+        if (n == size*size) //bottom right
         {
 			bd = 1;
 			br = 1;

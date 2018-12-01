@@ -25,8 +25,6 @@ public class Maze {
 		generateGold();
 		generateWumpus();		
 		generatePits();
-		printMaze();
-		System.out.println("----");
 		solve();
 	}
 	
@@ -48,7 +46,9 @@ public class Maze {
 						try {
 							if(i != 0 && j != 0) //if not starting point (0,0)
 							{
-								maze[i][j] = maze[i][j].concat(" P");
+								if(!maze[i][j].contains(" BR")) {
+									maze[i][j] = maze[i][j].concat(" P");
+								}
 								try {
 									if(!maze[i-1][j].contains(" BR"))
 									{
@@ -56,13 +56,22 @@ public class Maze {
 									}
 								}catch(ArrayIndexOutOfBoundsException e){}
 								try {
-									maze[i][j-1] = maze[i][j-1].concat(" BR");
+									if(!maze[i][j-1].contains(" BR"))
+									{
+										maze[i][j-1] = maze[i][j-1].concat(" BR");
+									}
 								}catch(ArrayIndexOutOfBoundsException e){}
 								try {
-									maze[i+1][j] = maze[i+1][j].concat(" BR");
+									if(!maze[i+1][j].contains(" BR"))
+									{
+										maze[i+1][j] = maze[i+1][j].concat(" BR");
+									}
 								}catch(ArrayIndexOutOfBoundsException e){}
 								try {
-									maze[i][j+1] = maze[i][j+1].concat(" BR");
+									if(!maze[i][j+1].contains(" BR"))
+									{
+										maze[i][j+1] = maze[i][j+1].concat(" BR");
+									}
 								}catch(ArrayIndexOutOfBoundsException e){}
 								
 							}
@@ -89,14 +98,30 @@ public class Maze {
 		}catch(ArrayIndexOutOfBoundsException e){}
 		//generate glitter surrounding gold tile
 		try {
-			maze[randX-1][randY] = maze[randX-1][randY].concat(" GL");
+			if(!maze[randX-1][randY].contains(" GL"))
+			{
+				maze[randX-1][randY] = maze[randX-1][randY].concat(" GL");
+			}
+			
 		}catch(ArrayIndexOutOfBoundsException e){}
 		try {
-			maze[randX+1][randY] = maze[randX+1][randY].concat(" GL");
-		}catch(ArrayIndexOutOfBoundsException e){}try {
-			maze[randX][randY-1] = maze[randX][randY-1].concat(" GL");
-		}catch(ArrayIndexOutOfBoundsException e){}try {
-			maze[randX][randY+1] = maze[randX][randY+1].concat(" GL");
+			if(!maze[randX+1][randY].contains(" GL"))
+			{
+				maze[randX+1][randY] = maze[randX+1][randY].concat(" GL");
+			}			
+		}catch(ArrayIndexOutOfBoundsException e){}
+		try {
+			if(!maze[randX][randY-1].contains(" GL"))
+			{
+				maze[randX][randY-1] = maze[randX][randY-1].concat(" GL");
+			}
+			
+		}catch(ArrayIndexOutOfBoundsException e){}
+		try {
+			if(!maze[randX][randY+1].contains(" GL"))
+			{
+				maze[randX][randY+1] = maze[randX][randY+1].concat(" GL");
+			}
 		}catch(ArrayIndexOutOfBoundsException e){}
 
 	}
@@ -118,20 +143,30 @@ public class Maze {
 			
 		}catch(ArrayIndexOutOfBoundsException e){}
 		try {
-			maze[randX-1][randY] = maze[randX-1][randY].concat(" SM");
+			if(!maze[randX-1][randY].contains(" SM"))
+			{
+				maze[randX-1][randY] = maze[randX-1][randY].concat(" SM");
+			}
 			
 		}catch(ArrayIndexOutOfBoundsException e){}
 		try {
-			maze[randX+1][randY] = maze[randX+1][randY].concat(" SM");
+			if(!maze[randX+1][randY].contains(" SM"))
+			{
+				maze[randX+1][randY] = maze[randX+1][randY].concat(" SM");
+			}			
+		}catch(ArrayIndexOutOfBoundsException e){}
+		try {
+			if(!maze[randX][randY-1].contains(" SM"))
+			{
+				maze[randX][randY-1] = maze[randX][randY-1].concat(" SM");
+			}
 			
 		}catch(ArrayIndexOutOfBoundsException e){}
 		try {
-			maze[randX][randY-1] = maze[randX][randY-1].concat(" SM");
-			
-		}catch(ArrayIndexOutOfBoundsException e){}
-		try {
-			maze[randX][randY+1] = maze[randX][randY+1].concat(" SM");
-			
+			if(!maze[randX][randY+1].contains(" SM"))
+			{
+				maze[randX][randY+1] = maze[randX][randY+1].concat(" SM");
+			}
 		}catch(ArrayIndexOutOfBoundsException e){}
 		
 
@@ -139,10 +174,15 @@ public class Maze {
 	
 	public void printMaze()
 	{
+		String format = "\n----------";
+		for(int a = 0; a < size-1; a++)
+		{
+			format = format.concat("-----------------");
+		}
 		
 		for (int i = 0; i < size; ++i) 
         {
-			System.out.println("\n-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+			System.out.println(format);
 			System.out.println("");
 			System.out.print("|\t");
         
@@ -152,7 +192,7 @@ public class Maze {
             }
 
         }
-		System.out.println("\n-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		System.out.println("\n" + format);
 
 
 	}
