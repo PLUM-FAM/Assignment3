@@ -8,6 +8,7 @@ import java.util.*;
 class tiles 
 {
 	//variation of flags that the adventurer logic uses.
+	//public so that we can access them in Wumpus without writing a ton of get methods.
 	int safe = 0;
 	int unsafe = 0;
 	int wump = 0;
@@ -17,10 +18,11 @@ class tiles
 	int doubt_wumpus = 0;
 	String env;
 	int num = 0;
-	int br = 0; //right
-	int bl = 0; //left
-	int bu = 0; //up
-	int bd = 0; //down
+	//back as in previously
+	int br = 0; //back right
+	int bl = 0; //back left
+	int bu = 0; //back up
+	int bd = 0; //back down
 	int visited = 0;
 	int l, r, u, d; //left right up and down
 	String back = "";

@@ -2,9 +2,9 @@ import java.util.*;
 
 class Wumpus 
 {
-	static int scream = 0;
-	static int score = 0;
-	static int complete = 0;
+	static int scream = 0; //keeping track of dead wumpus
+	static int score = 0; //keeping track of overall score
+	static int complete = 0; //keeping track of ended game/round
 	
 	int size;
 	String[][] maze; //2d array of strings to represent the cave/maze, each location is a string that holds substring values for each sense/object it contains.
@@ -45,6 +45,10 @@ class Wumpus
 		return true;
 	}
 
+	/*
+	 * Mess of logical statments for the actual navigation of the maze and the prediction of tile contents.
+	 * for reference from tile: 1 = breeze, 2 = smell, 3 = gold, 4 = wumpus, 5 = glitter, 6 = pit.
+	 */
     public void solve() 
     {
 		String w[][] = maze;
@@ -59,13 +63,18 @@ class Wumpus
         {
             for (int j = 0; j < size; j++) 
             {
-                if (c > (size*size))
+                if (c > (size*size)) //if larger than total instance size
                 {
 					break out;
                 }
 
+<<<<<<< HEAD
 				tiles[c] = new tiles(w[i][j], c, size);
 				++c;
+=======
+				t[c] = new tiles(w[i][j], c, size); //create a new instance of tile for this coordinate
+				c++;
+>>>>>>> refs/remotes/origin/master
 			}
 		}
 
@@ -73,9 +82,9 @@ class Wumpus
 		tiles[1].safe = 1;
 		tiles[1].visited = 1;
 
-		int pos = 1;
-		int condition;
-		int limit = 0;
+		int pos = 1; //current position based on tile number
+		int condition; //flag from sense()
+		int limit = 0; //counter to help determine when we are stuck in an unsolveable instance.
 		
 		String temp1, temp2; //flags for logical statements
         
@@ -111,13 +120,18 @@ class Wumpus
 				
 				tiles[pos].back += temp1;
 				
+<<<<<<< HEAD
 				condition = tiles[pos].sense();
+=======
+				condition = t[pos].sense(); //condition is what sense/object is detected with the sense() method
+>>>>>>> refs/remotes/origin/master
                 if (condition == 3) 
                 {
 					complete = 1;
 					break;
                 }
 
+<<<<<<< HEAD
                 else if (condition == 1 && tiles[pos].visited == 0) 
                 {
 					if (tiles[pos].br != 1 && tiles[pos + 1].safe != 1)
@@ -128,11 +142,27 @@ class Wumpus
 						tiles[pos - 1].doubt_pit += 1;
 					if (tiles[pos].bd != 1 && (pos + size) <= size*size && tiles[pos + size].safe != 1)
 						tiles[pos + size].doubt_pit += 1;
+=======
+                else if (condition == 1 && t[pos].visited == 0)  //logical statements for doubting whether there is a pit or not.
+                {
+					if (t[pos].br != 1 && t[pos + 1].safe != 1) 
+						t[pos + 1].doubt_pit += 1;
+					if (t[pos].bu != 1 && (pos - size) >= 1 && t[pos - size].safe != 1)
+						t[pos - size].doubt_pit += 1;
+					if (t[pos].bl != 1 && t[pos - 1].safe != 1)
+						t[pos - 1].doubt_pit += 1;
+					if (t[pos].bd != 1 && (pos + size) <= size*size && t[pos + size].safe != 1)
+						t[pos + size].doubt_pit += 1;
+>>>>>>> refs/remotes/origin/master
 
 					tiles[pos].safe = 1;
                 }
 
+<<<<<<< HEAD
                 else if (condition == 2 && tiles[pos].visited == 0) 
+=======
+                else if (condition == 2 && t[pos].visited == 0) //logical statements for doubting whether there is a wumpus or not.
+>>>>>>> refs/remotes/origin/master
                 {
                     if (tiles[pos].br != 1 && tiles[pos + 1].safe != 1)
                     {
@@ -157,9 +187,13 @@ class Wumpus
 					tiles[pos].safe = 1;
 				}
                 
+<<<<<<< HEAD
                 /*
 				 * else if(condition==4) { score=score+100; tiles[pos].safe=1; }
 				 */
+=======
+                
+>>>>>>> refs/remotes/origin/master
                 else if (condition == 0)
                 {
 					tiles[pos].safe = 1;
@@ -188,21 +222,21 @@ class Wumpus
 					break;
                 } 
                 
-                else if (condition == 1 && tiles[pos].visited == 0) 
+                else if (condition == 1 && t[pos].visited == 0) //logical statements determining that there is a pit.
                 {
-					if (tiles[pos].br != 1 && tiles[pos + 1].safe != 1)
-						tiles[pos + 1].doubt_pit += 1;
-					if (tiles[pos].bu != 1 && (pos - size) >= 1 && tiles[pos - size].safe != 1)
-						tiles[pos - size].doubt_pit += 1;
-					if (tiles[pos].bl != 1 && tiles[pos - 1].safe != 1)
-						tiles[pos - 1].doubt_pit += 1;
-					if (tiles[pos].bd != 1 && (pos + size) <=size*size && tiles[pos + size].safe != 1)
-						tiles[pos + size].doubt_pit += 1;
+					if (t[pos].br != 1 && t[pos + 1].safe != 1)
+						t[pos + 1].doubt_pit += 1;
+					if (t[pos].bu != 1 && (pos - size) >= 1 && t[pos - size].safe != 1)
+						t[pos - size].doubt_pit += 1;
+					if (t[pos].bl != 1 && t[pos - 1].safe != 1)
+						t[pos - 1].doubt_pit += 1;
+					if (t[pos].bd != 1 && (pos + size) <=size*size && t[pos + size].safe != 1)
+						t[pos + size].doubt_pit += 1;
 
-					tiles[pos].safe = 1;
+					t[pos].safe = 1;
                 } 
                 
-                else if (condition == 2 && tiles[pos].visited == 0) 
+                else if (condition == 2 && t[pos].visited == 0) //logical statements determining if there is a wumpus
                 {
 					if (tiles[pos].br != 1 && tiles[pos + 1].safe != 1)
                     {
@@ -245,11 +279,15 @@ class Wumpus
 			
 				tiles[pos].u = 1;
 				pos = pos - size;
-				++score;
+				score++;
 	
 				tiles[pos].back += temp1;
 				
+<<<<<<< HEAD
 				condition = tiles[pos].sense();
+=======
+				condition = t[pos].sense(); //condition holds the sense/object returned from sense()
+>>>>>>> refs/remotes/origin/master
                 if (condition == 3) 
                 {
 					complete = 1;
@@ -312,9 +350,14 @@ class Wumpus
 				pos = pos + size;
         
 				score++;
+<<<<<<< HEAD
 				// tiles[pos].visited=1;
 
 				tiles[pos].back += temp1;
+=======
+				
+				t[pos].back += temp1;
+>>>>>>> refs/remotes/origin/master
 		
 				condition = tiles[pos].sense();
                 if (condition == 3) 
@@ -384,13 +427,11 @@ class Wumpus
             {
 				int temp3 = pos;
 				int flag_1 = 0, flag2 = 0, flag3 = 0, flag4 = 0;
-
-				//System.out.println("\nCurrently at position " + temp3);
 				
                 while (tiles[pos].visited == 1 && tiles[pos].br != 1) 
                 {
 					pos++;
-					++score;
+					score++;
 				}
 
                 if (tiles[pos].pit == 1 || tiles[pos].wump == 1 || (tiles[pos].br == 1 && tiles[pos].visited == 1 && tiles[pos].safe != 1)) 
@@ -407,14 +448,12 @@ class Wumpus
                 while (pos - size >= 1 && tiles[pos].bu != 1 && tiles[pos].visited == 1) 
                 {
 					pos -= size;
-					++score;
+					score++;
 				}
 
                 if (tiles[pos].pit == 1 || tiles[pos].wump == 1	|| (tiles[pos].bu == 1 && tiles[pos].visited == 1 && tiles[pos].safe != 1)) 
                 {
-					// System.out.println("\nUnsuccessful at pos "+pos);
 					pos = temp3;
-					// System.out.println("\nBack at pos "+pos);
 					flag3 = 1;
 				}
 
@@ -423,19 +462,21 @@ class Wumpus
 					tiles[pos].back += "d";
                 }
 
+<<<<<<< HEAD
 				// if(!(tiles[pos].back.contains("l") && (tiles[pos].r!=1 || tiles[pos].u!=1
 				// || tiles[pos].d!=1) && check(tiles[pos]) ))
                 while (tiles[pos].visited == 1 && tiles[pos].bl != 1) 
+=======
+                while (t[pos].visited == 1 && t[pos].bl != 1) 
+>>>>>>> refs/remotes/origin/master
                 {
-					--pos;
-					++score;
+					pos--;
+					score++;
 				}
 
                 if (tiles[pos].pit == 1 || tiles[pos].wump == 1	|| (tiles[pos].bl == 1 && tiles[pos].visited == 1 && tiles[pos].safe != 1)) 
                 {
-					// System.out.println("\nUnsuccessful at pos "+pos);
 					pos = temp3;
-					// System.out.println("\nBack at pos "+pos);
 					flag2 = 1;
 				}
 
@@ -444,12 +485,16 @@ class Wumpus
 					tiles[pos].back += "r";
                 }
 
+<<<<<<< HEAD
 				// if(!(tiles[pos].back.contains("d") && (tiles[pos].l!=1 || tiles[pos].r!=1
 				// || tiles[pos].u!=1) && check(tiles[pos]) ))
                 while (pos + size <= size*size && tiles[pos].bd != 1 && tiles[pos].visited == 1) 
+=======
+                while (pos + size <= size*size && t[pos].bd != 1 && t[pos].visited == 1) 
+>>>>>>> refs/remotes/origin/master
                 {
 					pos += size;
-					++score;
+					score++;
 				}
 
                 if (tiles[pos].pit == 1 || tiles[pos].wump == 1 || (tiles[pos].bd == 1 && tiles[pos].visited == 1 && tiles[pos].safe != 1)) 
@@ -475,7 +520,7 @@ class Wumpus
 				tiles[pos].safe = 1;
 				tiles[pos].env.replace("W", " ");
                 
-                for (int l = 1; l <= size*size; ++l) 
+                for (int l = 1; l <= size*size; l++) 
                 {
 					tiles[l].doubt_wumpus = 0;
 					tiles[l].env.replace("SM", " ");
@@ -491,7 +536,7 @@ class Wumpus
 				endGame();
 			}
 
-            for (int k = 1; k <= size*size; ++k) 
+            for (int k = 1; k <= size*size; k++) 
             {
 				if (tiles[k].doubt_pit == 1 && tiles[k].doubt_wumpus == 1) 
                 {
@@ -501,12 +546,17 @@ class Wumpus
 				}
 			}
 
-            for (int y = 1; y <= size*size; ++y) 
+            for (int y = 1; y <= size*size; y++) 
             {
 				if (tiles[y].doubt_wumpus > 1) 
                 {
+<<<<<<< HEAD
 					tiles[y].wump = 1;
                     for (int h = 1; h <= size*size; ++h) 
+=======
+					t[y].wump = 1;
+                    for (int h = 1; h <= size*size; h++) 
+>>>>>>> refs/remotes/origin/master
                     {
                         if (h != y) 
                         {
@@ -518,7 +568,7 @@ class Wumpus
 				}
 			}
 
-            for (int y = 1; y <= size*size; ++y) 
+            for (int y = 1; y <= size*size; y++) 
             {
                 if (tiles[y].doubt_pit > 1) 
                 {
@@ -530,13 +580,10 @@ class Wumpus
 		} while (complete == 0); //end of do while loop
 
 		if (complete == 1) {
-			// score=score*2;
-			// if(scream==1)
-			// score-=100;
 
-			score *= -1;
+			score *= -1; //negate the score (we were counting up initially)
 			score *= 2; //double the score to take the same path back to the start
-			score += 1000;
+			score += 1000; //gold has been found only if complete flag is set.
 		}
 		System.out.println("Total score for adventurer is  " + score
 				+ ".\n(This includes the path cost to get out.)");
