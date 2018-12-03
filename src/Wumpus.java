@@ -68,13 +68,8 @@ class Wumpus
 					break out;
                 }
 
-<<<<<<< HEAD
-				tiles[c] = new tiles(w[i][j], c, size);
+				tiles[c] = new tiles(w[i][j], c, size); //create a new instance of tile for this coordinate
 				++c;
-=======
-				t[c] = new tiles(w[i][j], c, size); //create a new instance of tile for this coordinate
-				c++;
->>>>>>> refs/remotes/origin/master
 			}
 		}
 
@@ -120,19 +115,14 @@ class Wumpus
 				
 				tiles[pos].back += temp1;
 				
-<<<<<<< HEAD
-				condition = tiles[pos].sense();
-=======
-				condition = t[pos].sense(); //condition is what sense/object is detected with the sense() method
->>>>>>> refs/remotes/origin/master
+				condition = tiles[pos].sense(); //condition is what sense/object is detected with the sense() method
                 if (condition == 3) 
                 {
 					complete = 1;
 					break;
                 }
 
-<<<<<<< HEAD
-                else if (condition == 1 && tiles[pos].visited == 0) 
+                else if (condition == 1 && tiles[pos].visited == 0) //logical statements for doubting whether there is a pit or not.
                 {
 					if (tiles[pos].br != 1 && tiles[pos + 1].safe != 1)
 						tiles[pos + 1].doubt_pit += 1;
@@ -142,27 +132,11 @@ class Wumpus
 						tiles[pos - 1].doubt_pit += 1;
 					if (tiles[pos].bd != 1 && (pos + size) <= size*size && tiles[pos + size].safe != 1)
 						tiles[pos + size].doubt_pit += 1;
-=======
-                else if (condition == 1 && t[pos].visited == 0)  //logical statements for doubting whether there is a pit or not.
-                {
-					if (t[pos].br != 1 && t[pos + 1].safe != 1) 
-						t[pos + 1].doubt_pit += 1;
-					if (t[pos].bu != 1 && (pos - size) >= 1 && t[pos - size].safe != 1)
-						t[pos - size].doubt_pit += 1;
-					if (t[pos].bl != 1 && t[pos - 1].safe != 1)
-						t[pos - 1].doubt_pit += 1;
-					if (t[pos].bd != 1 && (pos + size) <= size*size && t[pos + size].safe != 1)
-						t[pos + size].doubt_pit += 1;
->>>>>>> refs/remotes/origin/master
 
 					tiles[pos].safe = 1;
                 }
 
-<<<<<<< HEAD
-                else if (condition == 2 && tiles[pos].visited == 0) 
-=======
-                else if (condition == 2 && t[pos].visited == 0) //logical statements for doubting whether there is a wumpus or not.
->>>>>>> refs/remotes/origin/master
+                else if (condition == 2 && tiles[pos].visited == 0) //logical statements for doubting whether there is a wumpus or not.
                 {
                     if (tiles[pos].br != 1 && tiles[pos + 1].safe != 1)
                     {
@@ -187,13 +161,9 @@ class Wumpus
 					tiles[pos].safe = 1;
 				}
                 
-<<<<<<< HEAD
                 /*
 				 * else if(condition==4) { score=score+100; tiles[pos].safe=1; }
 				 */
-=======
-                
->>>>>>> refs/remotes/origin/master
                 else if (condition == 0)
                 {
 					tiles[pos].safe = 1;
@@ -283,11 +253,7 @@ class Wumpus
 	
 				tiles[pos].back += temp1;
 				
-<<<<<<< HEAD
-				condition = tiles[pos].sense();
-=======
-				condition = t[pos].sense(); //condition holds the sense/object returned from sense()
->>>>>>> refs/remotes/origin/master
+				condition = tiles[pos].sense(); //condition holds the sense/object returned from sense()
                 if (condition == 3) 
                 {
 					complete = 1;
@@ -350,14 +316,9 @@ class Wumpus
 				pos = pos + size;
         
 				score++;
-<<<<<<< HEAD
 				// tiles[pos].visited=1;
 
 				tiles[pos].back += temp1;
-=======
-				
-				t[pos].back += temp1;
->>>>>>> refs/remotes/origin/master
 		
 				condition = tiles[pos].sense();
                 if (condition == 3) 
@@ -462,13 +423,9 @@ class Wumpus
 					tiles[pos].back += "d";
                 }
 
-<<<<<<< HEAD
 				// if(!(tiles[pos].back.contains("l") && (tiles[pos].r!=1 || tiles[pos].u!=1
 				// || tiles[pos].d!=1) && check(tiles[pos]) ))
                 while (tiles[pos].visited == 1 && tiles[pos].bl != 1) 
-=======
-                while (t[pos].visited == 1 && t[pos].bl != 1) 
->>>>>>> refs/remotes/origin/master
                 {
 					pos--;
 					score++;
@@ -485,13 +442,9 @@ class Wumpus
 					tiles[pos].back += "r";
                 }
 
-<<<<<<< HEAD
 				// if(!(tiles[pos].back.contains("d") && (tiles[pos].l!=1 || tiles[pos].r!=1
 				// || tiles[pos].u!=1) && check(tiles[pos]) ))
                 while (pos + size <= size*size && tiles[pos].bd != 1 && tiles[pos].visited == 1) 
-=======
-                while (pos + size <= size*size && t[pos].bd != 1 && t[pos].visited == 1) 
->>>>>>> refs/remotes/origin/master
                 {
 					pos += size;
 					score++;
@@ -550,13 +503,8 @@ class Wumpus
             {
 				if (tiles[y].doubt_wumpus > 1) 
                 {
-<<<<<<< HEAD
 					tiles[y].wump = 1;
                     for (int h = 1; h <= size*size; ++h) 
-=======
-					t[y].wump = 1;
-                    for (int h = 1; h <= size*size; h++) 
->>>>>>> refs/remotes/origin/master
                     {
                         if (h != y) 
                         {
