@@ -21,17 +21,23 @@ public class Maze {
 			}
 		}
 		
-		
+		//generate the layout of the maze
 		generateGold();
 		generateWumpus();		
 		generatePits();
+		printMaze();
+		//then place adventerur and solve.
 		solve();
 	}
 	
-	
+	/*
+	 * generatePits places a pit or "P" on the approperate coordinate locations based on a 20% probability (see assignment description)
+	 * it also generates the senses for the pit. I.E. the breezes in the 4 surrounding locations. The string "BR" represents a breeze.
+	 * The implementation does not allow a pit to be spawned on the same location as the gold.
+	 */
 	private void generatePits()
 	{
-		Random rand = new Random();
+		Random rand = new Random(); //random number for probability user
 		int r; 
 		for(int i = 0; i < size; i++)
 		{
@@ -49,7 +55,7 @@ public class Maze {
 								if(!maze[i][j].contains(" BR")) {
 									maze[i][j] = maze[i][j].concat(" P");
 								}
-								try {
+								try {													//these try catch blocks are here to catch placement attempts that are out of the bounds of the 2D array/maze/cave
 									if(!maze[i-1][j].contains(" BR"))
 									{
 										maze[i-1][j] = maze[i-1][j].concat(" BR");
@@ -83,14 +89,18 @@ public class Maze {
 		}
 	}
 	
-	
+	/*
+	 * generateGold picks a random location that is not the start location to place the gold represented with the string "G"
+	 * it also places the string "GL" on the surrounding locations to represent the glitter sense.
+	 * 
+	 * Again, all of these try catch blocks are to prevent the attempted placement of a sense/object that is out of bounds (out of the range of the maze)
+	 */
 	private void generateGold()
 	{
 		Random rand = new Random();
 		
-		int randX = rand.nextInt(size);
-		int randY = rand.nextInt(size);
-		
+		int randX = rand.nextInt(size); //random x coord for placement
+		int randY = rand.nextInt(size); //random y coord for placement
 		
 		try {
 		maze[randX][randY] = maze[randX][randY].concat(" G");
@@ -126,14 +136,20 @@ public class Maze {
 
 	}
 	
+	/*
+	 * generateWumpus places a "W" on a random maze/cave location to represent the Wumpus, it also places the sense "smell" represented by
+	 * the string "SM" in the surrounding locations.
+	 * The implementation does not allow for the generation of a wumpus on the same location as gold has already been spawned.
+	 * Again, all of these try catch blocks are to prevent the attempted placement of a sense/object that is out of bounds (out of the range of the maze)
+	 */
 	private void generateWumpus()
 	{
-		Random rand = new Random();
+		Random rand = new Random(); 
 		
-		int randX = rand.nextInt(size);
-		int randY = rand.nextInt(size);
+		int randX = rand.nextInt(size); //random x coord
+		int randY = rand.nextInt(size); //random y coord
 		
-		while(maze[randX][randY].equals("G") || (randX == 0 && randY == 0)) //if same spot as gold pick new.
+		while(maze[randX][randY].equals("G") || (randX == 0 && randY == 0)) //if same spot as gold pick new random values.
 		{
 			randX = rand.nextInt(size);
 			randY = rand.nextInt(size);
@@ -172,6 +188,10 @@ public class Maze {
 
 	}
 	
+	
+	/*
+	 * print maze is a helper method to display the generated cave in the program's output/console. 
+	 */
 	public void printMaze()
 	{
 		String format = "\n----------";
@@ -197,9 +217,14 @@ public class Maze {
 
 	}
 
+	
+	/*
+	 * solve is a middle man helper class to help faciliate the class/object separation of the program.
+	 */
 	public void solve()
-	{
+	{	//create a new instance of wumpus 
 		Wumpus wump = new Wumpus(size, maze);
+		//and solve it
 		wump.solve();
 	}
 	

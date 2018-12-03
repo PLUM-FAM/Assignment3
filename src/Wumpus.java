@@ -7,14 +7,22 @@ class Wumpus
 	static int complete = 0;
 	
 	int size;
-	String[][] maze;
+	String[][] maze; //2d array of strings to represent the cave/maze, each location is a string that holds substring values for each sense/object it contains.
 	
+	
+	/*
+	 * Constructor just initalizes size and maze global variables.
+	 */
 	public Wumpus(int size, String[][] maze)
 	{
 		this.size = size;
 		this.maze = maze;
 	}
 
+	
+	/*
+	 * helper method to notify the user of the score and the end of the game. Also ends the program if called.
+	 */
 	public void endGame()
 	{
 		System.out.println("Game over");
@@ -22,6 +30,10 @@ class Wumpus
 		System.exit(0);
 	}
 
+	
+	/*
+	 * helper method to check the current tile/location for senses. See tiles class for the list of senses.
+	 */
 	static boolean check(tiles t) {
         int temp = t.sense();
         
@@ -69,7 +81,7 @@ class Wumpus
         
         do 
         {
-			++limit;
+			limit++;
 			condition = -1;
 
             if (t[pos].env.contains("G")) 
@@ -92,7 +104,7 @@ class Wumpus
 			
 				temp1 = "l";
 				t[pos].r = 1;
-                ++pos;
+                pos++;
                 
                 
                 score++;
@@ -373,11 +385,11 @@ class Wumpus
 				int temp3 = pos;
 				int flag_1 = 0, flag2 = 0, flag3 = 0, flag4 = 0;
 
-				System.out.println("\nCurrently at position " + temp3);
+				//System.out.println("\nCurrently at position " + temp3);
 				
                 while (t[pos].visited == 1 && t[pos].br != 1) 
                 {
-					++pos;
+					pos++;
 					++score;
 				}
 
@@ -442,15 +454,9 @@ class Wumpus
 
                 if (t[pos].pit == 1 || t[pos].wump == 1 || (t[pos].bd == 1 && t[pos].visited == 1 && t[pos].safe != 1)) 
                 {
-					// System.out.println("\nUnsuccessful at pos "+pos);
 					pos = temp3;
-					// System.out.println("\nBack at pos "+pos);
 					flag4 = 1;
                 }
-                
-				// t[pos-1].r=0;
-				// ++pos;
-				// if(!t[pos].env.contains("P") && !t[pos].env.contains("W"))
 
                 if (flag4 == 0)
                 {
@@ -459,16 +465,14 @@ class Wumpus
 
 				t[pos].safe = 1;
 				t[pos].visited = 1;
-				System.out.println("reached at position " + pos);
 				limit = 0;
             }
             
-            if (t[pos].env.contains("W") && scream != 1) 
+            if (t[pos].env.contains("W") && scream != 1)  //if the current location contains the wumpus and the scream has been heard (it has been killed)
             {
 				score += 100;
 				scream = 1;
 				t[pos].safe = 1;
-				//System.out.println("\n\nWumpus killed >--0-->");
 				t[pos].env.replace("W", " ");
                 
                 for (int l = 1; l <= size*size; ++l) 
@@ -478,7 +482,7 @@ class Wumpus
 				}
 			}
 
-            if (t[pos].env.contains("P")) 
+            if (t[pos].env.contains("P")) //we are in the same location as a pit. therefore we die and the game is over.
             {
 				score += 50;
 				t[pos].pit = 1;
