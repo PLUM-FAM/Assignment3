@@ -192,21 +192,21 @@ class Wumpus
 					break;
                 } 
                 
-                else if (condition == 1 && t[pos].visited == 0) //logical statements determining that there is a pit.
+                else if (condition == 1 && tiles[pos].visited == 0) //logical statements determining that there is a pit.
                 {
-					if (t[pos].br != 1 && t[pos + 1].safe != 1)
-						t[pos + 1].doubt_pit += 1;
-					if (t[pos].bu != 1 && (pos - size) >= 1 && t[pos - size].safe != 1)
-						t[pos - size].doubt_pit += 1;
-					if (t[pos].bl != 1 && t[pos - 1].safe != 1)
-						t[pos - 1].doubt_pit += 1;
-					if (t[pos].bd != 1 && (pos + size) <=size*size && t[pos + size].safe != 1)
-						t[pos + size].doubt_pit += 1;
+					if (tiles[pos].br != 1 && tiles[pos + 1].safe != 1)
+						tiles[pos + 1].doubt_pit += 1;
+					if (tiles[pos].bu != 1 && (pos - size) >= 1 && tiles[pos - size].safe != 1)
+						tiles[pos - size].doubt_pit += 1;
+					if (tiles[pos].bl != 1 && tiles[pos - 1].safe != 1)
+						tiles[pos - 1].doubt_pit += 1;
+					if (tiles[pos].bd != 1 && (pos + size) <=size*size && tiles[pos + size].safe != 1)
+						tiles[pos + size].doubt_pit += 1;
 
-					t[pos].safe = 1;
+					tiles[pos].safe = 1;
                 } 
                 
-                else if (condition == 2 && t[pos].visited == 0) //logical statements determining if there is a wumpus
+                else if (condition == 2 && tiles[pos].visited == 0) //logical statements determining if there is a wumpus
                 {
 					if (tiles[pos].br != 1 && tiles[pos + 1].safe != 1)
                     {
