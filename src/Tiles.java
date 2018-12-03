@@ -14,7 +14,7 @@ class tiles
 	int pit = 0;
 	int gold = 0;
 	int doubt_pit = 0;
-	int doubt_wump = 0;
+	int doubt_wumpus = 0;
 	String env;
 	int num = 0;
 	int br = 0; //right

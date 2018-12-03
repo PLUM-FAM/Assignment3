@@ -34,8 +34,8 @@ class Wumpus
 	/*
 	 * helper method to check the current tile/location for senses. See tiles class for the list of senses.
 	 */
-	static boolean check(tiles t) {
-        int temp = t.sense();
+	static boolean check(tiles tiles) {
+        int temp = tiles.sense();
         
         if (temp == 1 || temp == 2)
         {
@@ -51,7 +51,7 @@ class Wumpus
     
         System.out.println("\n\nSolving...");
 
-		tiles t[] = new tiles[(size*size) + 1];
+		tiles tiles[] = new tiles[(size*size) + 1];
 		
 		int c = 1; //index for 1d tiles array
 		
@@ -64,14 +64,14 @@ class Wumpus
 					break out;
                 }
 
-				t[c] = new tiles(w[i][j], c, size);
+				tiles[c] = new tiles(w[i][j], c, size);
 				++c;
 			}
 		}
 
 		//setting the start position to save and visited
-		t[1].safe = 1;
-		t[1].visited = 1;
+		tiles[1].safe = 1;
+		tiles[1].visited = 1;
 
 		int pos = 1;
 		int condition;
@@ -84,300 +84,300 @@ class Wumpus
 			limit++;
 			condition = -1;
 
-            if (t[pos].env.contains("G")) 
+            if (tiles[pos].env.contains("G")) 
             {
 				complete = 1;
 				System.out.println("Gold Found! Yippie kai ayyeeee");
 				break;
 			}
-            if (t[pos].env.contains("W")) 
+            if (tiles[pos].env.contains("W")) 
             {
             	System.out.println("Eaten by wumpus. Oops." );
             	score *= -1;
             	endGame();
             }
 
-			if (t[pos].br != 1 && t[pos].r != 1 && t[pos + 1].doubt_pit < 1 && t[pos + 1].doubt_wump < 1
-					&& t[pos + 1].pit != 1 && t[pos + 1].wump != 1 && !(t[pos].back.contains("r")
-                            && (t[pos].l != 1 || t[pos].u != 1 || t[pos].d != 1) && check(t[pos]))) 
+			if (tiles[pos].br != 1 && tiles[pos].r != 1 && tiles[pos + 1].doubt_pit < 1 && tiles[pos + 1].doubt_wumpus < 1
+					&& tiles[pos + 1].pit != 1 && tiles[pos + 1].wump != 1 && !(tiles[pos].back.contains("r")
+                            && (tiles[pos].l != 1 || tiles[pos].u != 1 || tiles[pos].d != 1) && check(tiles[pos]))) 
             {
 			
 				temp1 = "l";
-				t[pos].r = 1;
+				tiles[pos].r = 1;
                 pos++;
                 
                 
                 score++;
 				
-				t[pos].back += temp1;
+				tiles[pos].back += temp1;
 				
-				condition = t[pos].sense();
+				condition = tiles[pos].sense();
                 if (condition == 3) 
                 {
 					complete = 1;
 					break;
                 }
 
-                else if (condition == 1 && t[pos].visited == 0) 
+                else if (condition == 1 && tiles[pos].visited == 0) 
                 {
-					if (t[pos].br != 1 && t[pos + 1].safe != 1)
-						t[pos + 1].doubt_pit += 1;
-					if (t[pos].bu != 1 && (pos - size) >= 1 && t[pos - size].safe != 1)
-						t[pos - size].doubt_pit += 1;
-					if (t[pos].bl != 1 && t[pos - 1].safe != 1)
-						t[pos - 1].doubt_pit += 1;
-					if (t[pos].bd != 1 && (pos + size) <= size*size && t[pos + size].safe != 1)
-						t[pos + size].doubt_pit += 1;
+					if (tiles[pos].br != 1 && tiles[pos + 1].safe != 1)
+						tiles[pos + 1].doubt_pit += 1;
+					if (tiles[pos].bu != 1 && (pos - size) >= 1 && tiles[pos - size].safe != 1)
+						tiles[pos - size].doubt_pit += 1;
+					if (tiles[pos].bl != 1 && tiles[pos - 1].safe != 1)
+						tiles[pos - 1].doubt_pit += 1;
+					if (tiles[pos].bd != 1 && (pos + size) <= size*size && tiles[pos + size].safe != 1)
+						tiles[pos + size].doubt_pit += 1;
 
-					t[pos].safe = 1;
+					tiles[pos].safe = 1;
                 }
 
-                else if (condition == 2 && t[pos].visited == 0) 
+                else if (condition == 2 && tiles[pos].visited == 0) 
                 {
-                    if (t[pos].br != 1 && t[pos + 1].safe != 1)
+                    if (tiles[pos].br != 1 && tiles[pos + 1].safe != 1)
                     {
-						t[pos + 1].doubt_wump += 1;
+						tiles[pos + 1].doubt_wumpus += 1;
                     }
 
-                    if (t[pos].bu != 1 && (pos - size) >= 1 && t[pos - size].safe != 1)
+                    if (tiles[pos].bu != 1 && (pos - size) >= 1 && tiles[pos - size].safe != 1)
                     {
-						t[pos - size].doubt_wump += 1;
+						tiles[pos - size].doubt_wumpus += 1;
                     }
 
-                    if (t[pos].bl != 1 && t[pos - 1].safe != 1)
+                    if (tiles[pos].bl != 1 && tiles[pos - 1].safe != 1)
                     {
-						t[pos - 1].doubt_wump += 1;
+						tiles[pos - 1].doubt_wumpus += 1;
                     }
 
-					if (t[pos].bd != 1 && (pos + size) <= size*size && t[pos + size].safe != 1)
+					if (tiles[pos].bd != 1 && (pos + size) <= size*size && tiles[pos + size].safe != 1)
                     {
-                        t[pos + size].doubt_wump += 1;
+						tiles[pos + size].doubt_wumpus += 1;
                     }
 
-					t[pos].safe = 1;
+					tiles[pos].safe = 1;
 				}
                 
                 /*
-				 * else if(condition==4) { score=score+100; t[pos].safe=1; }
+				 * else if(condition==4) { score=score+100; tiles[pos].safe=1; }
 				 */
                 else if (condition == 0)
                 {
-					t[pos].safe = 1;
+					tiles[pos].safe = 1;
                 }
 
-				t[pos].visited = 1;
+				tiles[pos].visited = 1;
             }
             
-            else if (t[pos].bl != 1 && t[pos].l != 1 && t[pos - 1].doubt_pit < 1 && t[pos - 1].doubt_wump < 1
-					&& t[pos - 1].pit != 1 && t[pos - 1].wump != 1 && !(t[pos].back.contains("l")
-                            && (t[pos].r != 1 || t[pos].u != 1 || t[pos].d != 1) && check(t[pos]))) 
+			else if (tiles[pos].bl != 1 && tiles[pos].l != 1 && tiles[pos - 1].doubt_pit < 1 && tiles[pos - 1].doubt_wumpus < 1
+					&& tiles[pos - 1].pit != 1 && tiles[pos - 1].wump != 1 && !(tiles[pos].back.contains("l")
+                            && (tiles[pos].r != 1 || tiles[pos].u != 1 || tiles[pos].d != 1) && check(tiles[pos]))) 
             {
 				
 				temp1 = "r";
 				
-				t[pos].l = 1;
+				tiles[pos].l = 1;
 				pos = pos - 1;
 				score++;
 
-				t[pos].back += temp1;
+				tiles[pos].back += temp1;
 
-				condition = t[pos].sense();
+				condition = tiles[pos].sense();
                 if (condition == 3) 
                 {
 					complete = 1;
 					break;
                 } 
                 
-                else if (condition == 1 && t[pos].visited == 0) 
+                else if (condition == 1 && tiles[pos].visited == 0) 
                 {
-					if (t[pos].br != 1 && t[pos + 1].safe != 1)
-						t[pos + 1].doubt_pit += 1;
-					if (t[pos].bu != 1 && (pos - size) >= 1 && t[pos - size].safe != 1)
-						t[pos - size].doubt_pit += 1;
-					if (t[pos].bl != 1 && t[pos - 1].safe != 1)
-						t[pos - 1].doubt_pit += 1;
-					if (t[pos].bd != 1 && (pos + size) <=size*size && t[pos + size].safe != 1)
-						t[pos + size].doubt_pit += 1;
+					if (tiles[pos].br != 1 && tiles[pos + 1].safe != 1)
+						tiles[pos + 1].doubt_pit += 1;
+					if (tiles[pos].bu != 1 && (pos - size) >= 1 && tiles[pos - size].safe != 1)
+						tiles[pos - size].doubt_pit += 1;
+					if (tiles[pos].bl != 1 && tiles[pos - 1].safe != 1)
+						tiles[pos - 1].doubt_pit += 1;
+					if (tiles[pos].bd != 1 && (pos + size) <=size*size && tiles[pos + size].safe != 1)
+						tiles[pos + size].doubt_pit += 1;
 
-					t[pos].safe = 1;
+					tiles[pos].safe = 1;
                 } 
                 
-                else if (condition == 2 && t[pos].visited == 0) 
+                else if (condition == 2 && tiles[pos].visited == 0) 
                 {
-					if (t[pos].br != 1 && t[pos + 1].safe != 1)
+					if (tiles[pos].br != 1 && tiles[pos + 1].safe != 1)
                     {
-                        t[pos + 1].doubt_wump += 1;
+						tiles[pos + 1].doubt_wumpus += 1;
                     }
                         
-                    if (t[pos].bu != 1 && (pos - size) >= 1 && t[pos - size].safe != 1)
+                    if (tiles[pos].bu != 1 && (pos - size) >= 1 && tiles[pos - size].safe != 1)
                     {
-                        t[pos - size].doubt_wump += 1;
+						tiles[pos - size].doubt_wumpus += 1;
                     }
                         
-                    if (t[pos].bl != 1 && t[pos - 1].safe != 1)
+                    if (tiles[pos].bl != 1 && tiles[pos - 1].safe != 1)
                     {
-                        t[pos - 1].doubt_wump += 1;
+						tiles[pos - 1].doubt_wumpus += 1;
                     }
                         
-                    if (t[pos].bd != 1 && (pos + size) <= size*size && t[pos + size].safe != 1)
+                    if (tiles[pos].bd != 1 && (pos + size) <= size*size && tiles[pos + size].safe != 1)
                     {
-						t[pos + size].doubt_wump += 1;
+						tiles[pos + size].doubt_wumpus += 1;
                     }
 
-					t[pos].safe = 1;
+					tiles[pos].safe = 1;
                 } 
                 
                 else if (condition == 0)
                 {
-					t[pos].safe = 1;
+					tiles[pos].safe = 1;
                 }
 
-				t[pos].visited = 1;
+				tiles[pos].visited = 1;
 
             } 
             
-            else if (t[pos].bu != 1 && t[pos].u != 1 && (pos - size) >= 1 && t[pos - size].doubt_pit < 1
-					&& t[pos - size].doubt_wump < 1 && t[pos - size].pit != 1 && t[pos - 1].wump != 1
-					&& !(t[pos].back.contains("u") && (t[pos].l != 1 || t[pos].r != 1 || t[pos].d != 1)
-                            && check(t[pos]))) 
+            else if (tiles[pos].bu != 1 && tiles[pos].u != 1 && (pos - size) >= 1 && tiles[pos - size].doubt_pit < 1
+					&& tiles[pos - size].doubt_wumpus < 1 && tiles[pos - size].pit != 1 && tiles[pos - 1].wump != 1
+					&& !(tiles[pos].back.contains("u") && (tiles[pos].l != 1 || tiles[pos].r != 1 || tiles[pos].d != 1)
+                            && check(tiles[pos]))) 
             {
 				temp1 = "d";
 			
-				t[pos].u = 1;
+				tiles[pos].u = 1;
 				pos = pos - size;
 				++score;
 	
-				t[pos].back += temp1;
+				tiles[pos].back += temp1;
 				
-				condition = t[pos].sense();
+				condition = tiles[pos].sense();
                 if (condition == 3) 
                 {
 					complete = 1;
 					break;
                 } 
                 
-                else if (condition == 1 && t[pos].visited == 0) 
+                else if (condition == 1 && tiles[pos].visited == 0) 
                 {
-                    if (t[pos].br != 1 && t[pos + 1].safe != 1)
+                    if (tiles[pos].br != 1 && tiles[pos + 1].safe != 1)
                     {
-						t[pos + 1].doubt_pit += 1;
+						tiles[pos + 1].doubt_pit += 1;
                     }
 
-					if (t[pos].bu != 1 && (pos - size) >= 1 && t[pos - size].safe != 1)
+					if (tiles[pos].bu != 1 && (pos - size) >= 1 && tiles[pos - size].safe != 1)
                     {
-                        t[pos - size].doubt_pit += 1;
+                        tiles[pos - size].doubt_pit += 1;
                     }   
                         
-					if (t[pos].bl != 1 && t[pos - 1].safe != 1)
+					if (tiles[pos].bl != 1 && tiles[pos - 1].safe != 1)
                     {
-                        t[pos - 1].doubt_pit += 1;
+                        tiles[pos - 1].doubt_pit += 1;
                     }    
                         
-					if (t[pos].bd != 1 && (pos + size) <= size*size && t[pos + size].safe != 1)
+					if (tiles[pos].bd != 1 && (pos + size) <= size*size && tiles[pos + size].safe != 1)
                     {
-                        t[pos + size].doubt_pit += 1;
+                        tiles[pos + size].doubt_pit += 1;
                     }
 
-                    t[pos].safe = 1;
+                    tiles[pos].safe = 1;
                 } 
                 
-                else if (condition == 2 && t[pos].visited == 0) 
+                else if (condition == 2 && tiles[pos].visited == 0) 
                 {
-					if (t[pos].br != 1 && t[pos + 1].safe != 1)
-						t[pos + 1].doubt_wump += 1;
-					if (t[pos].bu != 1 && (pos - size) >= 1 && t[pos - size].safe != 1)
-						t[pos - size].doubt_wump += 1;
-					if (t[pos].bl != 1 && t[pos - 1].safe != 1)
-						t[pos - 1].doubt_wump += 1;
-					if (t[pos].bd != 1 && (pos + size) <= size*size && t[pos + size].safe != 1)
-						t[pos + size].doubt_wump += 1;
+					if (tiles[pos].br != 1 && tiles[pos + 1].safe != 1)
+						tiles[pos + 1].doubt_wumpus += 1;
+					if (tiles[pos].bu != 1 && (pos - size) >= 1 && tiles[pos - size].safe != 1)
+						tiles[pos - size].doubt_wumpus += 1;
+					if (tiles[pos].bl != 1 && tiles[pos - 1].safe != 1)
+						tiles[pos - 1].doubt_wumpus += 1;
+					if (tiles[pos].bd != 1 && (pos + size) <= size*size && tiles[pos + size].safe != 1)
+						tiles[pos + size].doubt_wumpus += 1;
 
-					t[pos].safe = 1;
+					tiles[pos].safe = 1;
                 } 
 
                 else if (condition == 0)
                 {
-					t[pos].safe = 1;
+					tiles[pos].safe = 1;
                 }
 
-				t[pos].visited = 1;
+				tiles[pos].visited = 1;
             } 
             
-            else if (t[pos].bd != 1 && t[pos].d != 1 && (pos + size) <= size*size && t[pos + size].doubt_pit < 1
-                    && t[pos + size].doubt_wump < 1 && t[pos + size].pit != 1 && t[pos + size].wump != 1) 
+            else if (tiles[pos].bd != 1 && tiles[pos].d != 1 && (pos + size) <= size*size && tiles[pos + size].doubt_pit < 1
+					&& tiles[pos + size].doubt_wumpus < 1 && tiles[pos + size].pit != 1 && tiles[pos + size].wump != 1) 
             {
 				temp1 = "u";
 		
-				t[pos].d = 1;
+				tiles[pos].d = 1;
 				pos = pos + size;
         
 				score++;
-				// t[pos].visited=1;
+				// tiles[pos].visited=1;
 
-				t[pos].back += temp1;
+				tiles[pos].back += temp1;
 		
-				condition = t[pos].sense();
+				condition = tiles[pos].sense();
                 if (condition == 3) 
                 {
 					complete = 1;
 					break;
                 } 
                 
-                else if (condition == 1 && t[pos].visited == 0) 
+                else if (condition == 1 && tiles[pos].visited == 0) 
                 {
-                    if (t[pos].br != 1 && t[pos + 1].safe != 1)
+                    if (tiles[pos].br != 1 && tiles[pos + 1].safe != 1)
                     {
-						t[pos + 1].doubt_pit += 1;
+						tiles[pos + 1].doubt_pit += 1;
                     }
 
-                    if (t[pos].bu != 1 && (pos - size) >= 1 && t[pos - size].safe != 1)
+                    if (tiles[pos].bu != 1 && (pos - size) >= 1 && tiles[pos - size].safe != 1)
                     {
-						t[pos - size].doubt_pit += 1;
+						tiles[pos - size].doubt_pit += 1;
                     }
 
-                    if (t[pos].bl != 1 && t[pos - 1].safe != 1)
+                    if (tiles[pos].bl != 1 && tiles[pos - 1].safe != 1)
                     {
-						t[pos - 1].doubt_pit += 1;
+						tiles[pos - 1].doubt_pit += 1;
                     }
 
-                    if (t[pos].bd != 1 && (pos + size) <= size*size && t[pos + size].safe != 1)
+                    if (tiles[pos].bd != 1 && (pos + size) <= size*size && tiles[pos + size].safe != 1)
                     {
-						t[pos + size].doubt_pit += 1;
+						tiles[pos + size].doubt_pit += 1;
                     }
 
-					t[pos].safe = 1;
+					tiles[pos].safe = 1;
                 } 
-                else if (condition == 2 && t[pos].visited == 0) 
+                else if (condition == 2 && tiles[pos].visited == 0) 
                 {
-                    if (t[pos].br != 1 && t[pos + 1].safe != 1)
+                    if (tiles[pos].br != 1 && tiles[pos + 1].safe != 1)
                     {
-						t[pos + 1].doubt_wump += 1;
+						tiles[pos + 1].doubt_wumpus += 1;
                     }
 
-                    if (t[pos].bu != 1 && (pos - size) >= 1 && t[pos - size].safe != 1)
+                    if (tiles[pos].bu != 1 && (pos - size) >= 1 && tiles[pos - size].safe != 1)
                     {
-						t[pos - size].doubt_wump += 1;
+						tiles[pos - size].doubt_wumpus += 1;
                     }
 
-                    if (t[pos].bl != 1 && t[pos - 1].safe != 1)
+                    if (tiles[pos].bl != 1 && tiles[pos - 1].safe != 1)
                     {
-						t[pos - 1].doubt_wump += 1;
+						tiles[pos - 1].doubt_wumpus += 1;
                     }
 
-                    if (t[pos].bd != 1 && (pos + size) <= size*size && t[pos + size].safe != 1)
+                    if (tiles[pos].bd != 1 && (pos + size) <= size*size && tiles[pos + size].safe != 1)
                     {
-						t[pos + size].doubt_wump += 1;
+						tiles[pos + size].doubt_wumpus += 1;
                     }
 
-					t[pos].safe = 1;
+					tiles[pos].safe = 1;
                 } 
                 
                 else if (condition == 0)
                 {
-					t[pos].safe = 1;
+					tiles[pos].safe = 1;
                 }
 
-				t[pos].visited = 1;
+				tiles[pos].visited = 1;
             } 
             
             else if (limit > (size*10)) 
@@ -387,13 +387,13 @@ class Wumpus
 
 				//System.out.println("\nCurrently at position " + temp3);
 				
-                while (t[pos].visited == 1 && t[pos].br != 1) 
+                while (tiles[pos].visited == 1 && tiles[pos].br != 1) 
                 {
 					pos++;
 					++score;
 				}
 
-                if (t[pos].pit == 1 || t[pos].wump == 1 || (t[pos].br == 1 && t[pos].visited == 1 && t[pos].safe != 1)) 
+                if (tiles[pos].pit == 1 || tiles[pos].wump == 1 || (tiles[pos].br == 1 && tiles[pos].visited == 1 && tiles[pos].safe != 1)) 
                 {
 					pos = temp3;
 					flag_1 = 1;
@@ -401,16 +401,16 @@ class Wumpus
 
                 if (flag_1 == 0)
                 {
-					t[pos].back += "l";
+					tiles[pos].back += "l";
                 }
 
-                while (pos - size >= 1 && t[pos].bu != 1 && t[pos].visited == 1) 
+                while (pos - size >= 1 && tiles[pos].bu != 1 && tiles[pos].visited == 1) 
                 {
 					pos -= size;
 					++score;
 				}
 
-                if (t[pos].pit == 1 || t[pos].wump == 1	|| (t[pos].bu == 1 && t[pos].visited == 1 && t[pos].safe != 1)) 
+                if (tiles[pos].pit == 1 || tiles[pos].wump == 1	|| (tiles[pos].bu == 1 && tiles[pos].visited == 1 && tiles[pos].safe != 1)) 
                 {
 					// System.out.println("\nUnsuccessful at pos "+pos);
 					pos = temp3;
@@ -420,18 +420,18 @@ class Wumpus
 
                 if (flag3 == 0)
                 {
-					t[pos].back += "d";
+					tiles[pos].back += "d";
                 }
 
-				// if(!(t[pos].back.contains("l") && (t[pos].r!=1 || t[pos].u!=1
-				// || t[pos].d!=1) && check(t[pos]) ))
-                while (t[pos].visited == 1 && t[pos].bl != 1) 
+				// if(!(tiles[pos].back.contains("l") && (tiles[pos].r!=1 || tiles[pos].u!=1
+				// || tiles[pos].d!=1) && check(tiles[pos]) ))
+                while (tiles[pos].visited == 1 && tiles[pos].bl != 1) 
                 {
 					--pos;
 					++score;
 				}
 
-                if (t[pos].pit == 1 || t[pos].wump == 1	|| (t[pos].bl == 1 && t[pos].visited == 1 && t[pos].safe != 1)) 
+                if (tiles[pos].pit == 1 || tiles[pos].wump == 1	|| (tiles[pos].bl == 1 && tiles[pos].visited == 1 && tiles[pos].safe != 1)) 
                 {
 					// System.out.println("\nUnsuccessful at pos "+pos);
 					pos = temp3;
@@ -441,18 +441,18 @@ class Wumpus
 
                 if (flag2 == 0)
                 {
-					t[pos].back += "r";
+					tiles[pos].back += "r";
                 }
 
-				// if(!(t[pos].back.contains("d") && (t[pos].l!=1 || t[pos].r!=1
-				// || t[pos].u!=1) && check(t[pos]) ))
-                while (pos + size <= size*size && t[pos].bd != 1 && t[pos].visited == 1) 
+				// if(!(tiles[pos].back.contains("d") && (tiles[pos].l!=1 || tiles[pos].r!=1
+				// || tiles[pos].u!=1) && check(tiles[pos]) ))
+                while (pos + size <= size*size && tiles[pos].bd != 1 && tiles[pos].visited == 1) 
                 {
 					pos += size;
 					++score;
 				}
 
-                if (t[pos].pit == 1 || t[pos].wump == 1 || (t[pos].bd == 1 && t[pos].visited == 1 && t[pos].safe != 1)) 
+                if (tiles[pos].pit == 1 || tiles[pos].wump == 1 || (tiles[pos].bd == 1 && tiles[pos].visited == 1 && tiles[pos].safe != 1)) 
                 {
 					pos = temp3;
 					flag4 = 1;
@@ -460,32 +460,32 @@ class Wumpus
 
                 if (flag4 == 0)
                 {
-					t[pos].back += "u";
+					tiles[pos].back += "u";
                 }
 
-				t[pos].safe = 1;
-				t[pos].visited = 1;
+				tiles[pos].safe = 1;
+				tiles[pos].visited = 1;
 				limit = 0;
             }
             
-            if (t[pos].env.contains("W") && scream != 1)  //if the current location contains the wumpus and the scream has been heard (it has been killed)
+            if (tiles[pos].env.contains("W") && scream != 1)  //if the current location contains the wumpus and the scream has been heard (it has been killed)
             {
 				score += 100;
 				scream = 1;
-				t[pos].safe = 1;
-				t[pos].env.replace("W", " ");
+				tiles[pos].safe = 1;
+				tiles[pos].env.replace("W", " ");
                 
                 for (int l = 1; l <= size*size; ++l) 
                 {
-					t[l].doubt_wump = 0;
-					t[l].env.replace("SM", " ");
+					tiles[l].doubt_wumpus = 0;
+					tiles[l].env.replace("SM", " ");
 				}
 			}
 
-            if (t[pos].env.contains("P")) //we are in the same location as a pit. therefore we die and the game is over.
+            if (tiles[pos].env.contains("P")) //we are in the same location as a pit. therefore we die and the game is over.
             {
 				score += 50;
-				t[pos].pit = 1;
+				tiles[pos].pit = 1;
 				System.out.println("\n\nFallen in pit of position " + pos + ".");
             	score *= -1;
 				endGame();
@@ -493,25 +493,26 @@ class Wumpus
 
             for (int k = 1; k <= size*size; ++k) 
             {
-                if (t[k].doubt_pit == 1 && t[k].doubt_wump == 1) 
+				if (tiles[k].doubt_pit == 1 && tiles[k].doubt_wumpus == 1) 
                 {
-					t[k].doubt_pit = 0;
-					t[k].doubt_wump = 0;
-					t[k].safe = 1;
+					tiles[k].doubt_pit = 0;
+					tiles[k].doubt_wumpus = 0;
+					tiles[k].safe = 1;
 				}
 			}
 
             for (int y = 1; y <= size*size; ++y) 
             {
-                if (t[y].doubt_wump > 1) 
+				if (tiles[y].doubt_wumpus > 1) 
                 {
-					t[y].wump = 1;
+					tiles[y].wump = 1;
                     for (int h = 1; h <= size*size; ++h) 
                     {
                         if (h != y) 
                         {
-							t[h].doubt_wump = 0;
-							t[h].env.replace("SM", " ");
+							tiles[h].doubt_wumpus
+ = 0;
+							tiles[h].env.replace("SM", " ");
 						}
 					}
 				}
@@ -519,9 +520,9 @@ class Wumpus
 
             for (int y = 1; y <= size*size; ++y) 
             {
-                if (t[y].doubt_pit > 1) 
+                if (tiles[y].doubt_pit > 1) 
                 {
-					t[y].pit = 1;
+					tiles[y].pit = 1;
 					// System.out.println("\nPit confirmed at position "+y);
 				}
             }
