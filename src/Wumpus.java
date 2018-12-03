@@ -2,9 +2,9 @@ import java.util.*;
 
 class Wumpus 
 {
-	static int scream = 0;
-	static int score = 0;
-	static int complete = 0;
+	static int scream = 0; //keeping track of dead wumpus
+	static int score = 0; //keeping track of overall score
+	static int complete = 0; //keeping track of ended game/round
 	
 	int size;
 	String[][] maze; //2d array of strings to represent the cave/maze, each location is a string that holds substring values for each sense/object it contains.
@@ -45,6 +45,10 @@ class Wumpus
 		return true;
 	}
 
+	/*
+	 * Mess of logical statments for the actual navigation of the maze and the prediction of tile contents.
+	 * for reference from tile: 1 = breeze, 2 = smell, 3 = gold, 4 = wumpus, 5 = glitter, 6 = pit.
+	 */
     public void solve() 
     {
 		String w[][] = maze;
@@ -59,13 +63,13 @@ class Wumpus
         {
             for (int j = 0; j < size; j++) 
             {
-                if (c > (size*size))
+                if (c > (size*size)) //if larger than total instance size
                 {
 					break out;
                 }
 
-				t[c] = new tiles(w[i][j], c, size);
-				++c;
+				t[c] = new tiles(w[i][j], c, size); //create a new instance of tile for this coordinate
+				c++;
 			}
 		}
 
@@ -73,9 +77,9 @@ class Wumpus
 		t[1].safe = 1;
 		t[1].visited = 1;
 
-		int pos = 1;
-		int condition;
-		int limit = 0;
+		int pos = 1; //current position based on tile number
+		int condition; //flag from sense()
+		int limit = 0; //counter to help determine when we are stuck in an unsolveable instance.
 		
 		String temp1, temp2; //flags for logical statements
         
@@ -111,16 +115,16 @@ class Wumpus
 				
 				t[pos].back += temp1;
 				
-				condition = t[pos].sense();
+				condition = t[pos].sense(); //condition is what sense/object is detected with the sense() method
                 if (condition == 3) 
                 {
 					complete = 1;
 					break;
                 }
 
-                else if (condition == 1 && t[pos].visited == 0) 
+                else if (condition == 1 && t[pos].visited == 0)  //logical statements for doubting whether there is a pit or not.
                 {
-					if (t[pos].br != 1 && t[pos + 1].safe != 1)
+					if (t[pos].br != 1 && t[pos + 1].safe != 1) 
 						t[pos + 1].doubt_pit += 1;
 					if (t[pos].bu != 1 && (pos - size) >= 1 && t[pos - size].safe != 1)
 						t[pos - size].doubt_pit += 1;
@@ -132,7 +136,7 @@ class Wumpus
 					t[pos].safe = 1;
                 }
 
-                else if (condition == 2 && t[pos].visited == 0) 
+                else if (condition == 2 && t[pos].visited == 0) //logical statements for doubting whether there is a wumpus or not.
                 {
                     if (t[pos].br != 1 && t[pos + 1].safe != 1)
                     {
@@ -157,9 +161,7 @@ class Wumpus
 					t[pos].safe = 1;
 				}
                 
-                /*
-				 * else if(condition==4) { score=score+100; t[pos].safe=1; }
-				 */
+                
                 else if (condition == 0)
                 {
 					t[pos].safe = 1;
@@ -188,7 +190,7 @@ class Wumpus
 					break;
                 } 
                 
-                else if (condition == 1 && t[pos].visited == 0) 
+                else if (condition == 1 && t[pos].visited == 0) //logical statements determining that there is a pit.
                 {
 					if (t[pos].br != 1 && t[pos + 1].safe != 1)
 						t[pos + 1].doubt_pit += 1;
@@ -202,7 +204,7 @@ class Wumpus
 					t[pos].safe = 1;
                 } 
                 
-                else if (condition == 2 && t[pos].visited == 0) 
+                else if (condition == 2 && t[pos].visited == 0) //logical statements determining if there is a wumpus
                 {
 					if (t[pos].br != 1 && t[pos + 1].safe != 1)
                     {
@@ -245,11 +247,11 @@ class Wumpus
 			
 				t[pos].u = 1;
 				pos = pos - size;
-				++score;
+				score++;
 	
 				t[pos].back += temp1;
 				
-				condition = t[pos].sense();
+				condition = t[pos].sense(); //condition holds the sense/object returned from sense()
                 if (condition == 3) 
                 {
 					complete = 1;
@@ -312,8 +314,7 @@ class Wumpus
 				pos = pos + size;
         
 				score++;
-				// t[pos].visited=1;
-
+				
 				t[pos].back += temp1;
 		
 				condition = t[pos].sense();
@@ -384,13 +385,11 @@ class Wumpus
             {
 				int temp3 = pos;
 				int flag_1 = 0, flag2 = 0, flag3 = 0, flag4 = 0;
-
-				//System.out.println("\nCurrently at position " + temp3);
 				
                 while (t[pos].visited == 1 && t[pos].br != 1) 
                 {
 					pos++;
-					++score;
+					score++;
 				}
 
                 if (t[pos].pit == 1 || t[pos].wump == 1 || (t[pos].br == 1 && t[pos].visited == 1 && t[pos].safe != 1)) 
@@ -407,14 +406,12 @@ class Wumpus
                 while (pos - size >= 1 && t[pos].bu != 1 && t[pos].visited == 1) 
                 {
 					pos -= size;
-					++score;
+					score++;
 				}
 
                 if (t[pos].pit == 1 || t[pos].wump == 1	|| (t[pos].bu == 1 && t[pos].visited == 1 && t[pos].safe != 1)) 
                 {
-					// System.out.println("\nUnsuccessful at pos "+pos);
 					pos = temp3;
-					// System.out.println("\nBack at pos "+pos);
 					flag3 = 1;
 				}
 
@@ -423,19 +420,15 @@ class Wumpus
 					t[pos].back += "d";
                 }
 
-				// if(!(t[pos].back.contains("l") && (t[pos].r!=1 || t[pos].u!=1
-				// || t[pos].d!=1) && check(t[pos]) ))
                 while (t[pos].visited == 1 && t[pos].bl != 1) 
                 {
-					--pos;
-					++score;
+					pos--;
+					score++;
 				}
 
                 if (t[pos].pit == 1 || t[pos].wump == 1	|| (t[pos].bl == 1 && t[pos].visited == 1 && t[pos].safe != 1)) 
                 {
-					// System.out.println("\nUnsuccessful at pos "+pos);
 					pos = temp3;
-					// System.out.println("\nBack at pos "+pos);
 					flag2 = 1;
 				}
 
@@ -444,12 +437,10 @@ class Wumpus
 					t[pos].back += "r";
                 }
 
-				// if(!(t[pos].back.contains("d") && (t[pos].l!=1 || t[pos].r!=1
-				// || t[pos].u!=1) && check(t[pos]) ))
                 while (pos + size <= size*size && t[pos].bd != 1 && t[pos].visited == 1) 
                 {
 					pos += size;
-					++score;
+					score++;
 				}
 
                 if (t[pos].pit == 1 || t[pos].wump == 1 || (t[pos].bd == 1 && t[pos].visited == 1 && t[pos].safe != 1)) 
@@ -475,7 +466,7 @@ class Wumpus
 				t[pos].safe = 1;
 				t[pos].env.replace("W", " ");
                 
-                for (int l = 1; l <= size*size; ++l) 
+                for (int l = 1; l <= size*size; l++) 
                 {
 					t[l].doubt_wump = 0;
 					t[l].env.replace("SM", " ");
@@ -491,7 +482,7 @@ class Wumpus
 				endGame();
 			}
 
-            for (int k = 1; k <= size*size; ++k) 
+            for (int k = 1; k <= size*size; k++) 
             {
                 if (t[k].doubt_pit == 1 && t[k].doubt_wump == 1) 
                 {
@@ -501,12 +492,12 @@ class Wumpus
 				}
 			}
 
-            for (int y = 1; y <= size*size; ++y) 
+            for (int y = 1; y <= size*size; y++) 
             {
                 if (t[y].doubt_wump > 1) 
                 {
 					t[y].wump = 1;
-                    for (int h = 1; h <= size*size; ++h) 
+                    for (int h = 1; h <= size*size; h++) 
                     {
                         if (h != y) 
                         {
@@ -517,7 +508,7 @@ class Wumpus
 				}
 			}
 
-            for (int y = 1; y <= size*size; ++y) 
+            for (int y = 1; y <= size*size; y++) 
             {
                 if (t[y].doubt_pit > 1) 
                 {
@@ -529,13 +520,10 @@ class Wumpus
 		} while (complete == 0); //end of do while loop
 
 		if (complete == 1) {
-			// score=score*2;
-			// if(scream==1)
-			// score-=100;
 
-			score *= -1;
+			score *= -1; //negate the score (we were counting up initially)
 			score *= 2; //double the score to take the same path back to the start
-			score += 1000;
+			score += 1000; //gold has been found only if complete flag is set.
 		}
 		System.out.println("Total score for adventurer is  " + score
 				+ ".\n(This includes the path cost to get out.)");

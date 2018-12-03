@@ -200,13 +200,13 @@ public class Maze {
 			format = format.concat("-----------------");
 		}
 		
-		for (int i = 0; i < size; ++i) 
+		for (int i = 0; i < size; i++) 
         {
 			System.out.println(format);
 			System.out.println("");
 			System.out.print("|\t");
         
-            for (int j = 0; j < size; ++j)
+            for (int j = 0; j < size; j++)
             {
 				System.out.print(maze[i][j] + "\t|\t");
             }
